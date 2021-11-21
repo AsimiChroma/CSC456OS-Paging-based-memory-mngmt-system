@@ -4,7 +4,7 @@
 #include <vector>
 using namespace std;
 
-extern vector<int> physMem; // global physical memory array
+extern vector<int> g_physMem; // global physical memory array
 
 //----- Functions -----//
 void memMngr(int memSize, int frameSize);   // Initialize memory space
@@ -26,21 +26,27 @@ public:
     int frameNum;
 
     // free or not free frame
-    bool free;
+    bool freeFrame;
 };
 
 class FreeList {
 public:
-    FreeNode* head; // points to first node in list
+    FreeNode* head; // points to first node in list (currently NULL)
 
-    // Find the next free frame available (randomly)
+    // Find the next free frame available (randomly) returns the frame number that's true
     int findFrame();
+
+    // Return number of free frames in physical memory
+    int totalFree();
+
+    // Update frame to be true of false (free or not free)
+    void updateFrame(int frameNum, bool freeFrame);
 
     // Print
     void print();   // printing free frames
 
     // Insert
-    void insert();  // inserts next node at end of list
+    void insert(int frameNum, bool freeFrame);  // inserts next node at end of list
 
     // Delete
     void remove();  // destructor calls this each time
@@ -49,7 +55,11 @@ public:
     FreeList();
     // Destructor to delete list
     ~FreeList();
+
+    void init(int frameSize);
 };
+
+extern FreeList freeFrameList;  // global variable to hold linked list
 
 
 
@@ -74,25 +84,39 @@ class ProcessList {
 public:
 
     ProcessNode* head; // points to first node in list
-    ProcessNode* tail;
+    ProcessNode* tail;  // points to last node in list
 
     // Print
-    void print();   // printing free frames
+    void print();   // printing free frames with sizes
 
     // Insert
-    void insert();  // inserts next node at end of list
+    void insert(int pid, int pageSize);  // inserts next node at end of list
 
     // Delete list
     void remove();  // destructor calls this each time
 
     // Delete pid
-    void removePid();
+    void removePid(int pid);
 
     // Update pgTable
-    void updatePgTable();   // insert new values into pgTable
+    void updatePgTable(int pid, int pgNum, int frameNum);   // insert new values into pgTable
+
+    // Finds page size of process
+    int findPgSize(int pid);
+
+    // Page lookup to return a frame number
+    int pageLookup(int pid, int pgNum);
+
+    // Find pid
+    bool findPid(int pid);
+
+    // Constructor
+    ProcessList();
 
     // Destructor
     ~ProcessList();
 };
+
+extern ProcessList processList; // global variable for processList
 
 #endif
