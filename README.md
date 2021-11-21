@@ -1,6 +1,9 @@
 # CSC456OS-Paging-based-memory-mngmt-system
 A small paging-based memory management system run on Linux.
 
+Please view in raw format to see the correct spacing!
+
+
 How to run code:
 
 To run the code, you can just type "make" in your terminal to run the Makefile that will create an ./a.out file for you to input the commands. As for the commands, the command list is as follows:
@@ -22,11 +25,6 @@ D 4
 1
 P
 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
-
-
-
-
-
 
 
 
